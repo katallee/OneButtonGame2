@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Controller2D : MonoBehaviour
 {
-    public float moveSpeed = 10, jumpSpeed = 5;
+    public float moveSpeed = 7, jumpSpeed = 5;
     private Rigidbody rb;
     private bool isGrounded = true;
     int totalPotions = 0;
@@ -60,14 +60,11 @@ public class Controller2D : MonoBehaviour
             Debug.Log("You have " + totalPotions + " potions.");
             Debug.Log("You have " + totalWPotion + " wayfinding potions.");
             aud.PlayOneShot(powerUp);
-            if(totalPotions > 3) {
-                moveSpeed = 10;
-            }
             if(totalPotions > 5) {
-                moveSpeed = 13;
+                moveSpeed = 6;
             }
             if(totalPotions > 7) {
-                moveSpeed = 16;
+                moveSpeed = 7;
             }
         }
 
@@ -78,14 +75,11 @@ public class Controller2D : MonoBehaviour
             Debug.Log("You have " + totalPotions + " potions.");
             Debug.Log("You have " + totalSPotion + " strength potions.");
             aud.PlayOneShot(powerUp);
-            if(totalPotions > 3) {
-                moveSpeed = 10;
-            }
             if(totalPotions > 5) {
-                moveSpeed = 13;
+                moveSpeed = 6;
             }
             if(totalPotions > 7) {
-                moveSpeed = 16;
+                moveSpeed = 7;
             }
         }
 
@@ -96,14 +90,11 @@ public class Controller2D : MonoBehaviour
             Debug.Log("You have " + totalPotions + " potions.");
             Debug.Log("You have " + totalRPotion + " reveal potions.");
             aud.PlayOneShot(powerUp);
-            if(totalPotions > 3) {
-                moveSpeed = 10;
-            }
             if(totalPotions > 5) {
-                moveSpeed = 13;
+                moveSpeed = 6;
             }
             if(totalPotions > 7) {
-                moveSpeed = 16;
+                moveSpeed = 7;
             }
         }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Controller2D : MonoBehaviour
 {
-
     public float moveSpeed = 10, jumpSpeed = 5;
     private Rigidbody rb;
     private bool isGrounded = true;
@@ -13,10 +12,24 @@ public class Controller2D : MonoBehaviour
     int totalSPotion = 0;
     int totalRPotion = 0;
 
+    [SerializeField]
+    AudioClip doorOpen;
+    
+    [SerializeField]
+    AudioClip jump;
+    
+    [SerializeField]
+    AudioClip powerUp;
+
+    AudioSource aud;
+    Vector3 startPosition;
+
     // Start is called before the first frame update
     void Start()
     {
+        startPosition = this.transform.position;
         rb = this.GetComponent<Rigidbody>();
+        aud = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -40,15 +53,22 @@ public class Controller2D : MonoBehaviour
             isGrounded = true;
         }
 
-        //Debug.Log("I have collected a " + other.gameObject.name);
-
-
         if(other.gameObject.CompareTag("wayfinding-potion")) {
             totalPotions += 1;
             totalWPotion += 1;
             Destroy(other.gameObject);
             Debug.Log("You have " + totalPotions + " potions.");
             Debug.Log("You have " + totalWPotion + " wayfinding potions.");
+            aud.PlayOneShot(powerUp);
+            if(totalPotions > 3) {
+                moveSpeed = 10;
+            }
+            if(totalPotions > 5) {
+                moveSpeed = 13;
+            }
+            if(totalPotions > 7) {
+                moveSpeed = 16;
+            }
         }
 
         if(other.gameObject.CompareTag("strength-potion")) {
@@ -57,6 +77,16 @@ public class Controller2D : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log("You have " + totalPotions + " potions.");
             Debug.Log("You have " + totalSPotion + " strength potions.");
+            aud.PlayOneShot(powerUp);
+            if(totalPotions > 3) {
+                moveSpeed = 10;
+            }
+            if(totalPotions > 5) {
+                moveSpeed = 13;
+            }
+            if(totalPotions > 7) {
+                moveSpeed = 16;
+            }
         }
 
         if(other.gameObject.CompareTag("reveal-potion")) {
@@ -65,65 +95,39 @@ public class Controller2D : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log("You have " + totalPotions + " potions.");
             Debug.Log("You have " + totalRPotion + " reveal potions.");
-        }
-
-        if(other.gameObject.CompareTag("Purple Door")) {
-            if(totalWPotion > 10) {
-                totalWPotion -= 10;
-                totalPotions -= 10;
-                Destroy(other.gameObject);
-                //aud.PlayOneShot(doorOpen);
+            aud.PlayOneShot(powerUp);
+            if(totalPotions > 3) {
+                moveSpeed = 10;
             }
-            else {
-                Debug.Log("You need to collect 10 wayfinding potions to open this door.");
+            if(totalPotions > 5) {
+                moveSpeed = 13;
+            }
+            if(totalPotions > 7) {
+                moveSpeed = 16;
             }
         }
 
-        if(other.gameObject.CompareTag("Red Door")) {
-            if(totalSPotion > 10) {
-                totalSPotion -= 10;
-                totalPotions -= 10;
-                Destroy(other.gameObject);
-                //aud.PlayOneShot(doorOpen);
-            }
-            else {
-                Debug.Log("You need to collect 10 strength potions to open this door.");
-            }
-        }
-
-        if(other.gameObject.CompareTag("Black Door")) {
-            if(totalRPotion > 10) {
-                totalRPotion -= 10;
-                totalPotions -= 10;
-                Destroy(other.gameObject);
-                //aud.PlayOneShot(doorOpen);
-            }
-            else {
-                Debug.Log("You need to collect 10 reveal potions to open this door.");
-            }
-        }
-
-        if(other.gameObject.CompareTag("White Door")) {
+        if(other.gameObject.CompareTag("Door")) {
+            moveSpeed = 0;
             if(totalPotions == 30) {
                 totalWPotion -= 10;
                 totalRPotion -= 10;
                 totalSPotion -= 10;
                 totalPotions -= 30;
                 Destroy(other.gameObject);
-                //aud.PlayOneShot(doorOpen);
+                aud.PlayOneShot(doorOpen);
             }
             else {
-                Debug.Log("You need to collect all potions to open this door.");
+                Debug.Log("You need to collect all potions to open this door. Try again.");
+                this.transform.position = startPosition;
             }
         }
-
-//         //TO DO
-//         //Restart the level if the player didn't collect enough potions to advance
     }
 
     void Jump() {
         if(isGrounded) {
             rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+            aud.PlayOneShot(jump);
         }
     }
 }
